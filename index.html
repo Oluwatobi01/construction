@@ -3,11 +3,30 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="A modern React marketing site" />
+    <meta name="description" content="Launch pages that actually convert — modern React marketing site." />
+    <meta property="og:title" content="MarketPro" />
+    <meta property="og:description" content="Launch pages that actually convert." />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="/images/og-image.svg" />
+    <meta name="twitter:card" content="summary_large_image" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <title>Marketing App</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Lora:wght@400;600;700&display=swap" rel="stylesheet">
+    <title>MarketPro</title>
   </head>
-  <body class="bg-white text-slate-800">
+  <body>
+    <script>
+      (function(){
+        try {
+          const ls = localStorage.getItem('theme')
+          const mq = window.matchMedia('(prefers-color-scheme: dark)')
+          const shouldDark = ls === 'dark' || (!ls && mq.matches)
+          if (shouldDark) document.documentElement.classList.add('dark')
+          else document.documentElement.classList.remove('dark')
+        } catch (e) {}
+      })()
+    </script>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

@@ -4,15 +4,25 @@ export type Testimonial = { quote: string; author: string; role?: string }
 
 export const site = {
   name: 'MarketPro',
-  tagline: 'Beautiful product pages that convert',
-  description: 'Launch a high-converting marketing site in minutes with a modern, responsive design.',
+  tagline: 'Launch pages that actually convert',
+  description: 'A sleek, responsive marketing site with modern UX, gradient accents, and fast performance — ready in minutes.',
   primaryCTA: { label: 'Get Started', href: '#pricing' },
   secondaryCTA: { label: 'Live Demo', href: '#features' },
   nav: [
-    { label: 'Features', href: '#features' },
-    { label: 'Pricing', href: '#pricing' },
-    { label: 'Testimonials', href: '#testimonials' },
-    { label: 'FAQ', href: '#faq' },
+    { label: 'Services', href: '/hizmetler' },
+    { label: 'Features', href: '/features' },
+    { label: 'Pricing', href: '/pricing' },
+    { label: 'About', href: '/about' },
+    { label: 'Blog', href: '/blog' },
+    { label: 'Contact', href: '/contact' },
+  ],
+  services: [
+    { title: 'Açılış Sayfası Tasarımı', description: 'Dönüşüm odaklı, modern açılış sayfaları.', icon: '🚀' },
+    { title: 'Kurumsal Web Sitesi', description: 'İçerik hiyerarşisi ve SEO uyumlu yapı.', icon: '🏢' },
+    { title: 'Performans Optimizasyonu', description: 'Lighthouse skorlarını yükseltin.', icon: '⚙️' },
+    { title: 'Analytics Entegrasyonu', description: 'Veri odaklı büyüme için doğru ölçüm.', icon: '📈' },
+    { title: 'İçerik Yönetimi', description: 'Blog ve sayfa içerikleri için CMS hazır.', icon: '📝' },
+    { title: 'Bakım & Destek', description: 'Sürekli iyileştirme ve güvenlik güncellemeleri.', icon: '🛡️' },
   ],
   features: <Feature[]>[
     { title: 'No-code editor', description: 'Customize content, colors, and layout from a simple config.', icon: '🛠️' },
