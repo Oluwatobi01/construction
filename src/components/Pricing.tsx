@@ -1,5 +1,51 @@
 import React from 'react'
 import { site } from '@/config/site'
+import { getStripe } from '@/lib/stripe'
+
+const PRICE_MAP: Record<string, string | undefined> = {
+  Starter: import.meta.env.VITE_STRIPE_PRICE_STARTER,
+  Pro: import.meta.env.VITE_STRIPE_PRICE_PRO,
+  Business: import.meta.env.VITE_STRIPE_PRICE_BUSINESS,
+}
+
+function priceStringToCents(price: string): number | null {
+  // Expect formats like "$29/mo" or "$9"; strip non-digits
+  const match = price.replace(/[^0-9.]/g, '')
+  if (!match) return null
+  const dollars = parseFloat(match)
+  if (Number.isNaN(dollars)) return null
+  return Math.round(dollars * 100)
+}
+
+async function checkout(planName: string, planPrice: string) {
+  const priceId = PRICE_MAP[planName]
+  const cents = priceStringToCents(planPrice)
+  const productId = import.meta.env.VITE_STRIPE_PRODUCT_ID as string | undefined
+  const payload: any = priceId
+    ? { priceId }
+    : cents
+    ? { priceData: { amount: cents, currency: 'usd', name: `${planName} Plan`, productId } }
+    : null
+  if (!payload) {
+    alert('Stripe price is not configured and amount could not be parsed for ' + planName)
+    return
+  }
+  try {
+    const res = await fetch('/api/create-checkout-session', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    })
+    const body = await res.json().catch(() => ({}))
+    if (!res.ok) throw new Error(body?.error || 'Failed to create session')
+    const { id } = body
+    const stripe = await getStripe()
+    await stripe?.redirectToCheckout({ sessionId: id })
+  } catch (e) {
+    console.error(e)
+    alert('Unable to start checkout. See console for details.')
+  }
+}
 
 export default function Pricing() {
   return (
@@ -26,7 +72,7 @@ export default function Pricing() {
                   </li>
                 ))}
               </ul>
-              <a href="#" className={`mt-6 block w-full text-center ${p.highlighted ? 'button-primary bg-gradient-to-tr from-[var(--primary)] to-[var(--accent)]' : 'button-ghost'}`}>{p.cta}</a>
+              <button onClick={() => checkout(p.name, p.price)} className={`mt-6 block w-full text-center ${p.highlighted ? 'button-primary bg-gradient-to-tr from-[var(--primary)] to-[var(--accent)]' : 'button-ghost'}`}>{p.cta}</button>
             </div>
           ))}
         </div>
