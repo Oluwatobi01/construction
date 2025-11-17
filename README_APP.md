@@ -17,4 +17,17 @@ Stripe integration
 - Click a pricing CTA to create a Checkout session and redirect.
 
 Notes
-- The dev server exposes POST /api/create-checkout-session. For production, deploy a tiny serverless function with the same handler using the stripe SDK.
+- Dev: The Vite server exposes POST /api/create-checkout-session.
+- Production (Netlify): A serverless function is provided at /.netlify/functions/create-checkout-session.
+
+Deploying to Netlify
+1) Push this repo to Git (GitHub/GitLab/Bitbucket)
+2) In Netlify, "New site from Git" → pick your repo
+3) Build command: npm run build
+4) Publish directory: dist
+5) Functions directory: netlify/functions
+6) Environment variables (Site settings → Environment):
+   - VITE_STRIPE_PUBLISHABLE_KEY (from Stripe)
+   - STRIPE_SECRET_KEY (from Stripe, secret)
+   - Optional: VITE_STRIPE_PRICE_STARTER/PRO/BUSINESS, VITE_STRIPE_PRODUCT_ID
+7) Deploy. Client-side routing is configured via netlify.toml redirects.

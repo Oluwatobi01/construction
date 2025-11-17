@@ -47,11 +47,13 @@ const healthPlugin = () => ({
 
           if (!line_items) throw new Error('Missing priceId or priceData')
 
+          const urlPlan = (line_items?.[0] as any)?.price_data?.product || (line_items?.[0] as any)?.price_data?.product_data?.name || ''
+          const planQuery = urlPlan ? `?plan=${encodeURIComponent(urlPlan)}` : ''
           const session = await client.checkout.sessions.create({
             mode: 'payment',
             line_items,
-            success_url: `${origin}/?success=true`,
-            cancel_url: `${origin}/?canceled=true`,
+            success_url: `${origin}/checkout/success${planQuery}`,
+            cancel_url: `${origin}/checkout/cancel${planQuery}`,
             allow_promotion_codes: true,
           })
 

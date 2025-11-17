@@ -31,7 +31,8 @@ async function checkout(planName: string, planPrice: string) {
     return
   }
   try {
-    const res = await fetch('/api/create-checkout-session', {
+    const endpoint = import.meta.env.DEV ? '/api/create-checkout-session' : '/.netlify/functions/create-checkout-session'
+    const res = await fetch(endpoint, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
